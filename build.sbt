@@ -23,7 +23,7 @@ javaOptions += "-Xmx8G"
 fork in run := true
 
 libraryDependencies ++= Seq(
-  "com.azavea.geotrellis" %% "geotrellis-spark-etl" % "0.10.0-SNAPSHOT",
+  "com.azavea.geotrellis" %% "geotrellis-spark-etl" % "0.10.1",
   "org.apache.spark" %% "spark-core" % "1.6.0" % "provided",
   "org.scalatest"       %%  "scalatest"      % "2.2.0" % "test"
 )
