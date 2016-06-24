@@ -20,7 +20,7 @@ import org.apache.spark.rdd.RDD
 
 object Ingest {
   val sourceBucket = "azavea-datahub"
-  val statewideLayerName = "raw/treecanopy-2006-2008-pennysylvania-albers"
+  val statewideLayerName = "raw/treecanopy-2006-2008-pennsylvania-albers"
   val localLayerNames = List(
     "raw/treecanopy-pennsylvania-local/abingtons",
     "raw/treecanopy-pennsylvania-local/alleghenyCounty",
@@ -52,7 +52,6 @@ object Ingest {
     val maxLocalZoom = 19  // highest zoom level of local datasets
     val partitioner = new HashPartitioner(5000)
 
-
     try {
       val statewideLevelStream = loadAndTile(statewideLayerName, partitioner, maxLocalZoom)
 
@@ -61,9 +60,9 @@ object Ingest {
       })
 
       foreach [(Int, RDD[(SpatialKey, Tile)] with Metadata[TileLayerMetadata[SpatialKey]]), Any
-        ] (statewideLevelStream, localLevelStreams, {case ((z, statewide), localLevels) =>
+        ] (statewideLevelStream, localLevelStreams, {case ((z, statewide), localsThisLevel) =>
 
-        val locals = localLevels.map({ case (_, local) => local})
+        val locals = localsThisLevel.map({ case (_, local) => local})
         val merged =
           locals.foldLeft(statewide) { (acc, local) =>
             // merge() will add statewide values only where the local value is absent or NODATA
@@ -109,6 +108,8 @@ object Ingest {
       }
     Pyramid.levelStream(resampled, targetLayoutScheme, maxZoom, NearestNeighbor)
   }
+
+  // These functions borrowed from https://github.com/lossyrob/geotrellis-ned-example/blob/master/src/main/scala/elevation/Main.scala
 
   def loadFromS3(bucket: String, prefix: String, partitionCount: Int)(implicit sc: SparkContext): RDD[(ProjectedExtent, Tile)] = {
     val conf = {

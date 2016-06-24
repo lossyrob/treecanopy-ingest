@@ -4,7 +4,7 @@ CODE_TARGET=s3://azavea-datahub/jars/treecanopy-ingest
 AWS_REGION="us-east-1"
 SUBNET_ID="subnet-c5fefdb1"
 
-KEY_NAME=geotrellis-emr
+KEY_NAME=azavea-data
 
 # If you want to have zeppelin, uncomment
 # ZEPPELIN="Name=Zeppelin-Sandbox"
@@ -34,4 +34,4 @@ EXECUTOR_YARN_OVERHEAD=520
 # EXECUTOR_YARN_OVERHEAD=5200
 
 
-CLUSTER_ID=j-KNZE6KB8SY5D
+CLUSTER_ID=j-2QRLH6C75FI5I
